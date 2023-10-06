@@ -21,9 +21,6 @@ module.exports = {
   },
   plugins: ['react', 'prettier'],
   rules: {
-    'prettier/prettier': 'error',
-    '@typescript-eslint/comma-dangle': ['error', 'never'],
-    '@typescript-eslint/quotes': ['error', 'single'],
-    '@typescript-eslint/semi': 'off'
+    'prettier/prettier': 'error'
   }
 };
