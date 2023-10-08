@@ -3,7 +3,7 @@ import { BookType } from '@/types/Book';
 import { Badge } from '@/components/ui/badge';
 import { AiFillStar } from 'react-icons/ai';
 import { BiLinkExternal, BiPencil, BiTrash } from 'react-icons/bi';
-import { capitalizeFirstLetter } from '@/utils/stringHelpers';
+import { capitalizeFirstLetter, formatDate } from '@/utils/stringHelpers';
 import Link from 'next/link';
 
 type BookCardProps = {
@@ -69,6 +69,9 @@ const BookCard: React.FC<BookCardProps> = ({
               </Badge>
             ))}
           </div>
+          <span className="text-xs text-white mt-1">
+            Published: {formatDate(book.publishedDate)}
+          </span>
         </div>
       </div>
     </div>

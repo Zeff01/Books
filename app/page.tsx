@@ -6,6 +6,7 @@ import { useBookStore } from '@/store/bookStore';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/initSupabase';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useMutation } from 'react-query';
 
 export default function Home() {
   const { books, error, fetch } = useBookStore();
@@ -14,27 +15,34 @@ export default function Home() {
     fetch();
   }, []);
 
-  const handleDelete = async (id: number): Promise<void> => {
-    if (!confirm('Are you sure you want to delete this book?')) {
-      return;
-    }
-
+  async function deleteBook(id: number) {
     const { error } = await supabase.from('Books').delete().eq('id', id);
+    if (error) throw error;
+  }
 
-    if (error) {
-      toast({
-        title: 'Error',
-        description: 'Error deleting book.',
-        duration: 1000
-      });
-    } else {
+  const deleteMutation = useMutation(deleteBook, {
+    onSuccess: () => {
       toast({
         title: 'Success',
         description: 'Book deleted successfully.',
         duration: 1000
       });
       fetch();
+    },
+    onError: () => {
+      toast({
+        title: 'Error',
+        description: 'Error deleting book.',
+        duration: 1000
+      });
     }
+  });
+
+  const handleDelete = (id: number): void => {
+    if (!confirm('Are you sure you want to delete this book?')) {
+      return;
+    }
+    deleteMutation.mutate(id);
   };
 
   return (
